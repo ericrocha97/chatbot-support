@@ -15,7 +15,6 @@ import {
   GoogleGenerativeAI,
   HarmCategory,
   HarmBlockThreshold,
-  Content,
 } from "@google/generative-ai";
 import { useState } from "react";
 import { ChatMessage } from "@/app";
@@ -61,7 +60,6 @@ export function ChatWindow({
   setChatMessages,
 }: Readonly<ChatWindowProps>) {
   const [message, setMessage] = useState("");
-  const [history, setHistory] = useState<Content[]>([]);
 
   const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -75,9 +73,7 @@ export function ChatWindow({
     safetySettings,
   });
 
-  const chat = model.startChat({
-    history,
-  });
+  const chat = model.startChat({});
 
   async function handleSendMessage() {
     const newMessage: ChatMessage = {
