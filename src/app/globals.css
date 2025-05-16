@@ -1,0 +1,168 @@
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Importa as variáveis dos temas, mas não aplica no root para evitar conflito */
+@import "./rose-pine-theme/rose-pine-dawn.css" layer(dawn);
+@import "./rose-pine-theme/rose-pine-pine.css" layer(pine);
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+
+
+/* Rose Pine Dawn: define variáveis só no root (tema claro) */
+:root {
+  --rp-base: hsl(32deg, 57%, 95%);
+  --rp-surface: hsl(35deg, 100%, 98%);
+  --rp-overlay: hsl(33deg, 43%, 91%);
+  --rp-muted: hsl(257deg, 9%, 61%);
+  --rp-subtle: hsl(248deg, 12%, 52%);
+  --rp-text: hsl(248deg, 19%, 40%);
+  --rp-love: hsl(343deg, 35%, 55%);
+  --rp-gold: hsl(35deg, 81%, 56%);
+  --rp-rose: hsl(3deg, 53%, 67%);
+  --rp-pine: hsl(197deg, 53%, 34%);
+  --rp-foam: hsl(189deg, 30%, 48%);
+  --rp-iris: hsl(268deg, 21%, 57%);
+  --rp-highlight-low: hsl(25deg, 35%, 93%);
+  --rp-highlight-med: hsl(10deg, 9%, 86%);
+  --rp-highlight-high: hsl(315deg, 4%, 80%);
+}
+
+/* Rose Pine Pine: define variáveis só no escopo .dark (tema escuro) */
+.dark {
+  --rp-base: hsl(249deg, 22%, 12%);
+  --rp-surface: hsl(247deg, 23%, 15%);
+  --rp-overlay: hsl(248deg, 25%, 18%);
+  --rp-muted: hsl(249deg, 12%, 47%);
+  --rp-subtle: hsl(248deg, 15%, 61%);
+  --rp-text: hsl(245deg, 50%, 91%);
+  --rp-love: hsl(343deg, 76%, 68%);
+  --rp-gold: hsl(35deg, 88%, 72%);
+  --rp-rose: hsl(2deg, 55%, 83%);
+  --rp-pine: hsl(197deg, 49%, 38%);
+  --rp-foam: hsl(189deg, 43%, 73%);
+  --rp-iris: hsl(267deg, 57%, 78%);
+  --rp-highlight-low: hsl(244deg, 18%, 15%);
+  --rp-highlight-med: hsl(249deg, 15%, 28%);
+  --rp-highlight-high: hsl(248deg, 13%, 36%);
+}
+
+/* Agora, use as variáveis intermediárias para os tokens globais do app */
+:root {
+  --background: var(--rp-base);
+  --foreground: var(--rp-text);
+  --primary: var(--rp-love);
+  --primary-foreground: var(--rp-base);
+  --secondary: var(--rp-surface);
+  --secondary-foreground: var(--rp-text);
+  --muted: var(--rp-muted);
+  --muted-foreground: var(--rp-subtle);
+  --accent: var(--rp-highlight-med);
+  --accent-foreground: var(--rp-text);
+  --destructive: var(--rp-love);
+  --border: var(--rp-overlay);
+  --input: var(--rp-overlay);
+  --ring: var(--rp-iris);
+  --popover: var(--rp-surface);
+  --popover-foreground: var(--rp-text);
+  --card: var(--rp-surface);
+  --card-foreground: var(--rp-text);
+  --chart-1: var(--rp-gold);
+  --chart-2: var(--rp-foam);
+  --chart-3: var(--rp-iris);
+  --chart-4: var(--rp-rose);
+  --chart-5: var(--rp-pine);
+  --sidebar: var(--rp-surface);
+  --sidebar-foreground: var(--rp-text);
+  --sidebar-primary: var(--rp-gold);
+  --sidebar-primary-foreground: var(--rp-base);
+  --sidebar-accent: var(--rp-highlight-high);
+  --sidebar-accent-foreground: var(--rp-text);
+  --sidebar-border: var(--rp-overlay);
+  --sidebar-ring: var(--rp-iris);
+  --radius: 0.625rem;
+}
+
+.dark {
+  --background: var(--rp-base);
+  --foreground: var(--rp-text);
+  --primary: var(--rp-love);
+  --primary-foreground: var(--rp-base);
+  --secondary: var(--rp-surface);
+  --secondary-foreground: var(--rp-text);
+  --muted: var(--rp-muted);
+  --muted-foreground: var(--rp-subtle);
+  --accent: var(--rp-highlight-med);
+  --accent-foreground: var(--rp-text);
+  --destructive: var(--rp-love);
+  --border: var(--rp-overlay);
+  --input: var(--rp-overlay);
+  --ring: var(--rp-iris);
+  --popover: var(--rp-surface);
+  --popover-foreground: var(--rp-text);
+  --card: var(--rp-surface);
+  --card-foreground: var(--rp-text);
+  --chart-1: var(--rp-gold);
+  --chart-2: var(--rp-foam);
+  --chart-3: var(--rp-iris);
+  --chart-4: var(--rp-rose);
+  --chart-5: var(--rp-pine);
+  --sidebar: var(--rp-surface);
+  --sidebar-foreground: var(--rp-text);
+  --sidebar-primary: var(--rp-gold);
+  --sidebar-primary-foreground: var(--rp-base);
+  --sidebar-accent: var(--rp-highlight-high);
+  --sidebar-accent-foreground: var(--rp-text);
+  --sidebar-border: var(--rp-overlay);
+  --sidebar-ring: var(--rp-iris);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
