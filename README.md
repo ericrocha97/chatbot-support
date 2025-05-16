@@ -27,7 +27,7 @@ Este é um projeto de chatbot desenvolvido com [Next.js](https://nextjs.org), ut
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/seu-usuario/chatbot-support.git
+   git clone https://github.com/ericrocha97/chatbot-support.git
    cd chatbot-support
    ```
 
@@ -43,11 +43,11 @@ Este é um projeto de chatbot desenvolvido com [Next.js](https://nextjs.org), ut
 
 3. **Configure as variáveis de ambiente:**
 
-   Copie o arquivo `.env.exemple` para `.env.local` e preencha com suas chaves:
+   Copie o arquivo `.env.exemple` para `.env` e preencha com suas chaves:
 
    ```env
    GEMINI_API_KEY=suachave
-   UPSTASH_REDIS_REST_URL=su-url
+   UPSTASH_REDIS_REST_URL=sua-url
    UPSTASH_REDIS_REST_TOKEN=seu-token
    ```
 
