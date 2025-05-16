@@ -40,7 +40,6 @@ export function ChatWindow({ onClose }: Readonly<ChatWindowProps>) {
     setMessage('')
     setLoading(true)
     try {
-      console.log('Sending message:', message)
       const res = await fetch('/api/gemini', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -56,7 +55,10 @@ export function ChatWindow({ onClose }: Readonly<ChatWindowProps>) {
       const botMsg: Message = {
         id: crypto.randomUUID(),
         sender: 'bot',
-        text: data.error || 'Erro ao obter resposta',
+        text:
+          res.status === 200
+            ? data.text || 'Erro ao obter resposta'
+            : data.error || 'Erro ao obter resposta',
       }
       setChatMessages(msgs => [...msgs, botMsg])
     } catch (e) {
