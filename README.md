@@ -65,16 +65,24 @@ Este é um projeto de chatbot desenvolvido com [Next.js](https://nextjs.org), ut
 
 ## Estrutura do Projeto
 
-```
+```bash
 ├── public/                # Arquivos estáticos
 ├── src/
-│   ├── app/               # Páginas e layouts do Next.js
-│   ├── components/        # Componentes reutilizáveis
-│   ├── lib/               # Utilitários e lógica de backend
-│   └── ...                # Outros diretórios
-├── .env.exemple           # Exemplo de variáveis de ambiente
-├── package.json
-└── README.md
+│   ├── app/              # Páginas e layouts do Next.js
+│   │   ├── api/         # APIs do projeto
+│   │   └── rose-pine-theme/  # Arquivos de tema
+│   ├── components/       # Componentes reutilizáveis
+│   │   ├── sections/    # Seções da página
+│   │   └── ui/         # Componentes de UI
+│   ├── constants/       # Constantes e conteúdo estático
+│   ├── features/        # Features específicas
+│   │   └── chat/       # Funcionalidade do chat
+│   └── lib/            # Utilitários e serviços
+├── .env.exemple         # Exemplo de variáveis de ambiente
+├── components.json      # Configuração de componentes
+├── next.config.ts      # Configuração do Next.js
+├── package.json        # Dependências e scripts
+└── README.md           # Documentação
 ```
 
 ## Scripts Disponíveis
