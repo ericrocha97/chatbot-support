@@ -38,10 +38,11 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    console.error('Gemini error:', error)
+    console.error('Erro ao obter resposta do Gemini:', error)
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : 'Erro ao chamar Gemini',
+        error:
+          'Ocorreu um erro ao processar sua solicitação. Tente novamente mais tarde.',
       },
       { status: 500 }
     )
