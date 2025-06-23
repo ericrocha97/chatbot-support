@@ -9,7 +9,7 @@ interface ChatHeaderProps {
   onClose: () => void
 }
 
-export function ChatHeader({ loading, onClose }: ChatHeaderProps) {
+export function ChatHeader({ loading, onClose }: Readonly<ChatHeaderProps>) {
   return (
     <CardHeader className="flex justify-between flex-row items-center">
       <CardTitle>Chat para suporte</CardTitle>

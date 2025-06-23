@@ -47,6 +47,7 @@ Este é um projeto de chatbot desenvolvido com [Next.js](https://nextjs.org), ut
 
    ```env
    GEMINI_API_KEY=suachave
+   GEMINI_MODEL=modelo
    UPSTASH_REDIS_REST_URL=sua-url
    UPSTASH_REDIS_REST_TOKEN=seu-token
    ```

@@ -18,7 +18,7 @@ export function ChatInput({
   loading,
   onMessageChange,
   onSendMessage,
-}: ChatInputProps) {
+}: Readonly<ChatInputProps>) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

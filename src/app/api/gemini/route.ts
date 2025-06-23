@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         }
       })()
     ) {
-      const info = JSON.parse((error as Error).message) as {
+      const info = JSON.parse(error.message) as {
         limit: number
         reset: string
         code: number

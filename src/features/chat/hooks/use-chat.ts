@@ -43,7 +43,7 @@ export function useChat() {
         const rateLimitError = data as RateLimitError
         errorMessage = formatRateLimitMessage(rateLimitError)
       } else if (res.status !== 200) {
-        errorMessage = data.error || 'Erro ao obter resposta'
+        errorMessage = data.error ?? 'Erro ao obter resposta'
       }
 
       const botMsg: Message = {
@@ -61,6 +61,7 @@ export function useChat() {
           text: 'Erro ao conectar com o servidor.',
         },
       ])
+      console.error('Error sending message:', e)
     } finally {
       setLoading(false)
     }

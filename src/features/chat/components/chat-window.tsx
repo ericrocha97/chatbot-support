@@ -16,7 +16,7 @@ export function ChatWindow({ onClose }: Readonly<ChatWindowProps>) {
   const contentRef = useRef<HTMLDivElement>(null)
 
   // Scroll automático para a última mensagem
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: This effect depends on chatMessages and loading
   useEffect(() => {
     if (contentRef.current) {
       contentRef.current.scrollTop = contentRef.current.scrollHeight

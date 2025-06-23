@@ -22,7 +22,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
         ) : (
           <div
             className="bg-chart-5 text-primary-foreground dark:text-secondary-foreground rounded-tr-xl rounded-bl-xl p-3 mb-3 whitespace-pre-wrap break-words prose prose-sm dark:prose-invert"
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: this is safe as we control the content and it is sanitized before being sent to the client
             dangerouslySetInnerHTML={{
               __html: formatBotText(text),
             }}

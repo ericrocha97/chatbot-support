@@ -7,7 +7,9 @@ interface FloatingChatButtonProps {
   onClick: () => void
 }
 
-export function FloatingChatButton({ onClick }: FloatingChatButtonProps) {
+export function FloatingChatButton({
+  onClick,
+}: Readonly<FloatingChatButtonProps>) {
   return (
     <Button
       className="w-12 h-12 flex justify-center items-center bg-chart-5 dark:bg-chart-5-dark text-white dark:text-white hover:bg-chart-2 dark:hover:bg-chart-2-dark"

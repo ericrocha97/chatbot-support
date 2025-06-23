@@ -6,6 +6,8 @@ interface Message {
   parts: { text: string }[]
 }
 
+const geminiModel = process.env.GEMINI_MODEL
+
 export async function getGeminiCompletion(
   ip: string,
   message: string,
@@ -26,7 +28,7 @@ export async function getGeminiCompletion(
       },
     ],
   }
-  const model = 'gemini-2.0-flash'
+  const model = geminiModel || 'gemini-2.5-flash'
 
   const contents: Message[] = [
     ...history,
