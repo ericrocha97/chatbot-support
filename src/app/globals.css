@@ -1,10 +1,11 @@
-
 @import "tailwindcss";
 @import "tw-animate-css";
 
 /* Importa as variáveis dos temas, mas não aplica no root para evitar conflito */
 @import "./rose-pine-theme/rose-pine-dawn.css" layer(dawn);
 @import "./rose-pine-theme/rose-pine-pine.css" layer(pine);
+
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -47,8 +48,6 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
-
-
 
 /* Rose Pine Dawn: define variáveis só no root (tema claro) */
 :root {

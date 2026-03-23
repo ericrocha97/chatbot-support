@@ -1,27 +1,27 @@
-'use client'
+"use client";
 
-import { CardContent } from '@/components/ui/card'
-import { useEffect, useRef } from 'react'
-import { useChat } from '../hooks/use-chat'
-import type { ChatWindowProps } from '../types'
-import { ChatContainer } from './chat-container'
-import { ChatDisclaimer } from './chat-disclaimer'
-import { ChatHeader } from './chat-header'
-import { ChatInput } from './chat-input'
-import { ChatMessage } from './chat-message'
-import { ChatTypingIndicator } from './chat-typing-indicator'
+import { useEffect, useRef } from "react";
+import { CardContent } from "@/components/ui/card";
+import { useChat } from "../hooks/use-chat";
+import type { ChatWindowProps } from "../types";
+import { ChatContainer } from "./chat-container";
+import { ChatDisclaimer } from "./chat-disclaimer";
+import { ChatHeader } from "./chat-header";
+import { ChatInput } from "./chat-input";
+import { ChatMessage } from "./chat-message";
+import { ChatTypingIndicator } from "./chat-typing-indicator";
 
 export function ChatWindow({ onClose }: Readonly<ChatWindowProps>) {
-  const { chatMessages, message, loading, setMessage, sendMessage } = useChat()
-  const contentRef = useRef<HTMLDivElement>(null)
+  const { chatMessages, message, loading, setMessage, sendMessage } = useChat();
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Scroll automático para a última mensagem
   // biome-ignore lint/correctness/useExhaustiveDependencies: This effect depends on chatMessages and loading
   useEffect(() => {
     if (contentRef.current) {
-      contentRef.current.scrollTop = contentRef.current.scrollHeight
+      contentRef.current.scrollTop = contentRef.current.scrollHeight;
     }
-  }, [chatMessages, loading])
+  }, [chatMessages, loading]);
 
   return (
     <ChatContainer>
@@ -31,7 +31,7 @@ export function ChatWindow({ onClose }: Readonly<ChatWindowProps>) {
         <div className="flex flex-col gap-2">
           <ChatDisclaimer />
 
-          {chatMessages.map(message => (
+          {chatMessages.map((message) => (
             <ChatMessage key={message.id} message={message} />
           ))}
 
@@ -40,11 +40,11 @@ export function ChatWindow({ onClose }: Readonly<ChatWindowProps>) {
       </CardContent>
 
       <ChatInput
-        message={message}
         loading={loading}
+        message={message}
         onMessageChange={setMessage}
         onSendMessage={sendMessage}
       />
     </ChatContainer>
-  )
+  );
 }
