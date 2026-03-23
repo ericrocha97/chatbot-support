@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { CardFooter } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { SendIcon } from 'lucide-react'
-import { useRef } from 'react'
+import { SendIcon } from "lucide-react";
+import { useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 interface ChatInputProps {
-  message: string
-  loading: boolean
-  onMessageChange: (message: string) => void
-  onSendMessage: () => void
+  loading: boolean;
+  message: string;
+  onMessageChange: (message: string) => void;
+  onSendMessage: () => void;
 }
 
 export function ChatInput({
@@ -19,34 +19,34 @@ export function ChatInput({
   onMessageChange,
   onSendMessage,
 }: Readonly<ChatInputProps>) {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !loading) {
-      onSendMessage()
+    if (e.key === "Enter" && !loading) {
+      onSendMessage();
     }
-  }
+  };
 
   return (
-    <CardFooter className="flex justify-between items-center">
+    <CardFooter className="flex items-center justify-between">
       <Input
-        type="text"
-        placeholder="Digite sua mensagem..."
         className="w-64"
-        value={message}
-        onChange={e => onMessageChange(e.target.value)}
-        onKeyDown={handleInputKeyDown}
         disabled={loading}
+        onChange={(e) => onMessageChange(e.target.value)}
+        onKeyDown={handleInputKeyDown}
+        placeholder="Digite sua mensagem..."
         ref={inputRef}
+        type="text"
+        value={message}
       />
       <Button
-        onClick={onSendMessage}
-        className="flex justify-center items-center"
-        size="icon"
+        className="flex items-center justify-center"
         disabled={loading || !message.trim()}
+        onClick={onSendMessage}
+        size="icon"
       >
-        <SendIcon className="w-6 h-6" />
+        <SendIcon className="h-6 w-6" />
       </Button>
     </CardFooter>
-  )
+  );
 }

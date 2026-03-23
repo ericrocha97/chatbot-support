@@ -1,27 +1,27 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { CardHeader, CardTitle } from '@/components/ui/card'
-import { CircleXIcon } from 'lucide-react'
+import { CircleXIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ChatHeaderProps {
-  loading: boolean
-  onClose: () => void
+  loading: boolean;
+  onClose: () => void;
 }
 
 export function ChatHeader({ loading, onClose }: Readonly<ChatHeaderProps>) {
   return (
-    <CardHeader className="flex justify-between flex-row items-center">
+    <CardHeader className="flex flex-row items-center justify-between">
       <CardTitle>Chat para suporte</CardTitle>
       <Button
-        className="flex justify-center items-center"
-        variant="destructive"
-        size="icon"
-        onClick={onClose}
+        className="flex items-center justify-center"
         disabled={loading}
+        onClick={onClose}
+        size="icon"
+        variant="destructive"
       >
-        <CircleXIcon className="w-6 h-6" />
+        <CircleXIcon className="h-6 w-6" />
       </Button>
     </CardHeader>
-  )
+  );
 }

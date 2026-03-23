@@ -1,34 +1,31 @@
-'use client'
+"use client";
 
-import type { Message } from '../types'
-import { formatBotText } from '../utils/message-formatter'
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import type { Message } from "../types";
 
 interface ChatMessageProps {
-  message: Message
+  message: Message;
 }
 
 export function ChatMessage({ message }: ChatMessageProps) {
-  const { sender, text } = message
+  const { sender, text } = message;
   return (
     <div
-      className={`flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`}
+      className={`flex ${sender === "user" ? "justify-end" : "justify-start"}`}
     >
       <div className="max-w-[85%]">
-        {sender === 'user' ? (
-          <div className="bg-chart-4 text-primary-foreground rounded-tr-xl rounded-bl-xl p-3 mb-3 whitespace-pre-wrap break-words">
+        {sender === "user" ? (
+          <div className="mb-3 whitespace-pre-wrap break-words rounded-tr-xl rounded-bl-xl bg-chart-4 p-3 text-primary-foreground">
             <span className="font-semibold">Você: </span>
             {text}
           </div>
         ) : (
-          <div
-            className="bg-chart-5 text-primary-foreground dark:text-secondary-foreground rounded-tr-xl rounded-bl-xl p-3 mb-3 whitespace-pre-wrap break-words prose prose-sm dark:prose-invert"
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: this is safe as we control the content and it is sanitized before being sent to the client
-            dangerouslySetInnerHTML={{
-              __html: formatBotText(text),
-            }}
-          />
+          <div className="prose prose-sm dark:prose-invert mb-3 max-w-none break-words rounded-tr-xl rounded-bl-xl bg-chart-5 p-3 prose-pre:p-0 text-primary-foreground prose-p:leading-relaxed dark:text-secondary-foreground">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+          </div>
         )}
       </div>
     </div>
-  )
+  );
 }

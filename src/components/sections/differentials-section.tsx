@@ -1,17 +1,17 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { DIFFERENTIALS } from '@/constants/content'
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { DIFFERENTIALS } from "@/constants/content";
 
 export function DifferentialsSection() {
   return (
-    <Card className="shadow-md border border-border/60">
-      <CardHeader className="text-xl font-bold pb-2">Diferenciais</CardHeader>
-      <CardContent className="text-muted-foreground pt-0">
-        <ul className="list-disc pl-5 space-y-1">
-          {DIFFERENTIALS.map(differential => (
+    <Card className="border border-border/60 shadow-md">
+      <CardHeader className="pb-2 font-bold text-xl">Diferenciais</CardHeader>
+      <CardContent className="pt-0 text-muted-foreground">
+        <ul className="list-disc space-y-1 pl-5">
+          {DIFFERENTIALS.map((differential) => (
             <li key={differential.id}>{differential.title}</li>
           ))}
         </ul>
       </CardContent>
     </Card>
-  )
+  );
 }

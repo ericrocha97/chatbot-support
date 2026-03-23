@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { MessageCircleQuestionIcon } from 'lucide-react'
+import { MessageCircleQuestionIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface FloatingChatButtonProps {
-  onClick: () => void
+  onClick: () => void;
 }
 
 export function FloatingChatButton({
@@ -12,12 +12,12 @@ export function FloatingChatButton({
 }: Readonly<FloatingChatButtonProps>) {
   return (
     <Button
-      className="w-12 h-12 flex justify-center items-center bg-chart-5 dark:bg-chart-5-dark text-white dark:text-white hover:bg-chart-2 dark:hover:bg-chart-2-dark"
-      variant="outline"
-      size="icon"
+      className="flex h-12 w-12 items-center justify-center bg-chart-5 text-white hover:bg-chart-2 dark:bg-chart-5-dark dark:text-white dark:hover:bg-chart-2-dark"
       onClick={onClick}
+      size="icon"
+      variant="outline"
     >
-      <MessageCircleQuestionIcon className="w-6 h-6" />
+      <MessageCircleQuestionIcon className="h-6 w-6" />
     </Button>
-  )
+  );
 }

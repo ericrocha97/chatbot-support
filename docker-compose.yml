@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: chatbot-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
+  upstash-redis-proxy:
+    image: hiett/serverless-redis-http:latest
+    container_name: chatbot-upstash-proxy
+    ports:
+      - "8079:80"
+    environment:
+      - SRH_MODE=env
+      - SRH_TOKEN=token_local_dev
+      - SRH_CONNECTION_STRING=redis://redis:6379
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+volumes:
+  redis_data:
