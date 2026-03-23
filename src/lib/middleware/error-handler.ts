@@ -48,7 +48,8 @@ export function withErrorHandler(
         logger.warn("Invalid JSON body", sessionId);
       } else if (error instanceof z.ZodError) {
         statusCode = 400;
-        message = "A validação dos dados falhou.";
+        // User-friendly message since this goes directly to the chat interface
+        message = "Sua mensagem é muito longa ou possui um formato inválido. Por favor, resuma ou tente novamente.";
         responsePayload.issues = error.issues;
         logger.warn("Validation error", sessionId, { issues: error.issues });
       } else if (error instanceof AppError) {
