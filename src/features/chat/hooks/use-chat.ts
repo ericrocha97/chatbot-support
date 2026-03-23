@@ -19,8 +19,7 @@ export function useChat() {
       const data = await res.json();
       setSessionToken(data.token);
       return data.token;
-    } catch (e) {
-      console.error("Session renewal failed", e);
+    } catch {
       return null;
     }
   }, []);
@@ -107,7 +106,7 @@ export function useChat() {
         text: res.ok ? data.text : errorMessage,
       };
       setChatMessages((msgs) => [...msgs, botMsg]);
-    } catch (e) {
+    } catch {
       setChatMessages((msgs) => [
         ...msgs,
         {
@@ -116,7 +115,6 @@ export function useChat() {
           text: "Não consegui me conectar. Verifique sua conexão com a internet ou tente novamente em instantes.",
         },
       ]);
-      console.error("Error sending message:", e);
     } finally {
       setLoading(false);
     }
