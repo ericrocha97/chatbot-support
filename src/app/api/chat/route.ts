@@ -1,7 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { RateLimitError, UnauthorizedError } from "@/lib/errors";
+import {
+  RateLimitError,
+  UnauthorizedError,
+  ValidationError,
+} from "@/lib/errors";
 import { logger } from "@/lib/logger";
-import { applyCors } from "@/lib/middleware/cors";
+import { getCorsHeaders } from "@/lib/middleware/cors";
 import { withErrorHandler } from "@/lib/middleware/error-handler";
 import { payloadSchema } from "@/lib/middleware/validate-payload";
 import { rateLimit } from "@/lib/rate-limiter";
@@ -9,7 +13,7 @@ import { getAiCompletion } from "@/lib/services/ai";
 import { validateSession } from "@/lib/session";
 
 export const POST = withErrorHandler(async (req: NextRequest) => {
-  applyCors(req);
+  const corsHeaders = getCorsHeaders(req);
 
   const authHeader = req.headers.get("Authorization");
   if (!authHeader?.startsWith("Bearer ")) {
@@ -22,12 +26,19 @@ export const POST = withErrorHandler(async (req: NextRequest) => {
     throw new UnauthorizedError("Sessão inválida ou expirada.");
   }
 
-  const result = await rateLimit(session.sessionId);
+  // Rate limit by IP to prevent abuse even after session renewal
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  const result = await rateLimit(ip);
   if (!result.success) {
     throw new RateLimitError(result.limit, result.reset);
   }
 
-  const json = await req.json();
+  let json: unknown;
+  try {
+    json = await req.json();
+  } catch {
+    throw new ValidationError("JSON inválido ou malformado.");
+  }
   const { message, history } = payloadSchema.parse(json);
 
   logger.info("Chat request started", session.sessionId, {
@@ -38,9 +49,10 @@ export const POST = withErrorHandler(async (req: NextRequest) => {
 
   logger.info("Chat request completed", session.sessionId);
 
-  return NextResponse.json({ text });
+  return NextResponse.json({ text }, { headers: corsHeaders });
 });
 
-export const OPTIONS = () => {
-  return new NextResponse(null, { status: 204 });
+export const OPTIONS = (req: NextRequest) => {
+  const corsHeaders = getCorsHeaders(req);
+  return new NextResponse(null, { status: 204, headers: corsHeaders });
 };

@@ -62,4 +62,27 @@ describe("CircuitBreaker", () => {
 
     expect(cb.state).toBe("OPEN");
   });
+
+  it("resets failure count after a success in CLOSED state", async () => {
+    const failAction = vi.fn().mockRejectedValue(new Error("fail"));
+    const successAction = vi.fn().mockResolvedValue("ok");
+
+    // Fail twice (threshold is 3)
+    await expect(cb.execute(failAction)).rejects.toThrow("fail");
+    await expect(cb.execute(failAction)).rejects.toThrow("fail");
+    expect(cb.state).toBe("CLOSED");
+
+    // A success should reset the failure count
+    await cb.execute(successAction);
+    expect(cb.state).toBe("CLOSED");
+
+    // Two more failures should NOT open the circuit yet (count was reset)
+    await expect(cb.execute(failAction)).rejects.toThrow("fail");
+    await expect(cb.execute(failAction)).rejects.toThrow("fail");
+    expect(cb.state).toBe("CLOSED");
+
+    // Third failure now opens it
+    await expect(cb.execute(failAction)).rejects.toThrow("fail");
+    expect(cb.state).toBe("OPEN");
+  });
 });

@@ -15,8 +15,8 @@ export class InMemoryRateLimiter {
     this.windowMs = windowMs;
     this.records = new Map();
 
-    // Cleanup interval
-    setInterval(() => this.cleanup(), this.windowMs * 2);
+    // Cleanup interval — unref prevents this from keeping the Node process alive
+    setInterval(() => this.cleanup(), this.windowMs * 2).unref();
   }
 
   limit(key: string): RateLimitResult {

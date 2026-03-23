@@ -23,13 +23,29 @@ export function withErrorHandler(
       // biome-ignore lint/suspicious/noExplicitAny: error payload is dynamic
       const responsePayload: any = {};
 
-      let sessionId = req.headers.get("Authorization")?.split(" ")[1];
-      // Extract just the part before the dot if it is a token, for logging purposes
-      if (sessionId) {
-        sessionId = sessionId.split(".")[0];
+      // Extract sessionId from the Auth header: decode base64 first segment
+      let sessionId: string | undefined;
+      const authHeader = req.headers.get("Authorization");
+      if (authHeader?.startsWith("Bearer ")) {
+        try {
+          const payloadB64 = authHeader.slice(7).split(".")[0];
+          const decoded = JSON.parse(
+            Buffer.from(payloadB64, "base64url").toString("utf-8")
+          );
+          sessionId =
+            typeof decoded?.sessionId === "string"
+              ? decoded.sessionId
+              : undefined;
+        } catch {
+          // ignore
+        }
       }
 
-      if (error instanceof z.ZodError) {
+      if (error instanceof SyntaxError) {
+        statusCode = 400;
+        message = "JSON inválido ou malformado.";
+        logger.warn("Invalid JSON body", sessionId);
+      } else if (error instanceof z.ZodError) {
         statusCode = 400;
         message = "A validação dos dados falhou.";
         responsePayload.issues = error.issues;
@@ -40,7 +56,7 @@ export function withErrorHandler(
 
         if (error instanceof RateLimitError) {
           responsePayload.limit = error.limit;
-          responsePayload.resetAt = error.resetAt;
+          responsePayload.reset = error.resetAt; // align with client RateLimitError type
           logger.warn("Rate limit hit", sessionId, { limit: error.limit });
         } else if (error instanceof UnauthorizedError) {
           logger.warn("Unauthorized access", sessionId);

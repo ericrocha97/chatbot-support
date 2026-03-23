@@ -31,6 +31,9 @@ export class CircuitBreaker {
 
       if (this.state === "HALF_OPEN") {
         this.transitionTo("CLOSED");
+      } else if (this.state === "CLOSED") {
+        // Reset failure count on success to avoid accumulation of sporadic failures
+        this.failures = 0;
       }
       return result;
     } catch (error) {

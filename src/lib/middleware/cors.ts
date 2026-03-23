@@ -3,15 +3,29 @@ import { env } from "../env";
 import { ForbiddenError } from "../errors";
 import { logger } from "../logger";
 
-export function applyCors(req: NextRequest) {
-  if (!env.ALLOWED_ORIGINS) {
-    return;
-  }
+const CORS_METHODS = "POST, OPTIONS";
+const CORS_HEADERS = "Content-Type, Authorization, Accept";
 
+/**
+ * Validates the origin and returns the correct CORS headers to include in the response.
+ * Returns null if no ALLOWED_ORIGINS is configured (open CORS).
+ * Throws ForbiddenError if origin is not in the allowlist.
+ */
+export function getCorsHeaders(req: NextRequest): Record<string, string> {
   const origin = req.headers.get("origin");
 
+  // If no allowlist is configured, allow all but don't send credentials header
+  if (!env.ALLOWED_ORIGINS) {
+    return {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": CORS_METHODS,
+      "Access-Control-Allow-Headers": CORS_HEADERS,
+    };
+  }
+
   if (!origin) {
-    return; // Optional: reject if no origin? Usually allow server-to-server.
+    // Server-to-server requests without Origin: allow, but return no CORS headers
+    return {};
   }
 
   const allowed = env.ALLOWED_ORIGINS.split(",").map((s) => s.trim());
@@ -20,4 +34,13 @@ export function applyCors(req: NextRequest) {
     logger.warn("CORS blocked request", undefined, { origin, allowed });
     throw new ForbiddenError(`Origem ${origin} não autorizada pelo CORS.`);
   }
+
+  // Echo back the validated origin (required when using credentials)
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": CORS_METHODS,
+    "Access-Control-Allow-Headers": CORS_HEADERS,
+    "Access-Control-Allow-Credentials": "true",
+    Vary: "Origin",
+  };
 }

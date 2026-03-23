@@ -32,15 +32,23 @@ describe("Payload Validation", () => {
     expect(result.success).toBe(false);
   });
 
-  it("sanitizes HTML from message", () => {
+  it("rejects history item with empty parts array", () => {
+    const invalid = {
+      message: "Hello",
+      history: [{ role: "user", parts: [] }],
+    };
+    const result = payloadSchema.safeParse(invalid);
+    expect(result.success).toBe(false);
+  });
+
+  it("sanitizes HTML from message via Zod transform", () => {
     const payload = {
       message: "<script>alert()</script>Hello",
       history: [],
     };
     const result = payloadSchema.safeParse(payload);
     expect(result.success).toBe(true);
-    // The sanitizer is part of the middleware function, not the zod schema directly.
-    // If we use zod transform to sanitize, it should be tested here.
+    // sanitization is done via Zod .transform() in the schema
     if (result.success) {
       expect(result.data.message).not.toContain("<script>");
       expect(result.data.message).toContain("Hello");

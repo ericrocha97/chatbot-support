@@ -1,4 +1,5 @@
-import { createHmac, randomUUID } from "node:crypto";
+import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
+import { z } from "zod";
 import { env } from "./env";
 
 export interface SessionPayload {
@@ -6,6 +7,12 @@ export interface SessionPayload {
   expiresAt: number;
   sessionId: string;
 }
+
+const sessionPayloadSchema = z.object({
+  sessionId: z.uuid(),
+  createdAt: z.number().int().positive(),
+  expiresAt: z.number().int().positive(),
+});
 
 function sign(payload: string): string {
   const hmac = createHmac("sha256", env.SESSION_TOKEN_SECRET);
@@ -42,16 +49,24 @@ export async function validateSession(
   }
 
   const [payloadB64, signature] = parts;
-  const expectedSignature = sign(payloadB64);
+  const expectedSig = sign(payloadB64);
 
-  if (signature !== expectedSignature) {
+  // Use timingSafeEqual to prevent timing attacks
+  const sigBuf = Buffer.from(signature);
+  const expBuf = Buffer.from(expectedSig);
+  if (sigBuf.length !== expBuf.length || !timingSafeEqual(sigBuf, expBuf)) {
     return null;
   }
 
   try {
     const payloadBuffer = Buffer.from(payloadB64, "base64url");
     const payloadStr = payloadBuffer.toString("utf-8");
-    const payload = JSON.parse(payloadStr) as SessionPayload;
+    const parsed = sessionPayloadSchema.safeParse(JSON.parse(payloadStr));
+
+    if (!parsed.success) {
+      return null;
+    }
+    const payload = parsed.data;
 
     if (Date.now() > payload.expiresAt) {
       return null;
