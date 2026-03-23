@@ -7,9 +7,9 @@ const CORS_METHODS = "POST, OPTIONS";
 const CORS_HEADERS = "Content-Type, Authorization, Accept";
 
 /**
- * Validates the origin and returns the correct CORS headers to include in the response.
- * Returns null if no ALLOWED_ORIGINS is configured (open CORS).
- * Throws ForbiddenError if origin is not in the allowlist.
+ * Validates the request origin and returns the correct CORS headers to include in the response.
+ * Returns an empty object ({}) if no ALLOWED_ORIGINS is configured or if the request has no Origin header.
+ * Throws ForbiddenError if the origin is not in the allowlist.
  */
 export function getCorsHeaders(req: NextRequest): Record<string, string> {
   const origin = req.headers.get("origin");

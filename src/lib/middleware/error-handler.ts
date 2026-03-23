@@ -72,9 +72,18 @@ export function withErrorHandler(
         });
       }
 
+      // Safely resolve CORS headers — getCorsHeaders may itself throw (e.g., ForbiddenError)
+      // for blocked origins. In that case we return no CORS headers rather than crashing.
+      let corsHeaders: Record<string, string> = {};
+      try {
+        corsHeaders = getCorsHeaders(req);
+      } catch {
+        // Intentionally suppressed: original error takes priority
+      }
+
       return NextResponse.json(
         { error: message, ...responsePayload },
-        { status: statusCode, headers: getCorsHeaders(req) }
+        { status: statusCode, headers: corsHeaders }
       );
     }
   };

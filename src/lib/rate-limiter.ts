@@ -38,9 +38,14 @@ export async function rateLimit(key: string): Promise<RateLimitResult> {
         await redisCircuitBreaker.execute(() => upstashRatelimit.limit(key));
       return { success, limit, remaining, reset };
     } catch (error) {
-      logger.error("Redis ratelimit failed. Using fallback limiter.", key, {
-        error: String(error),
-      });
+      logger.error(
+        "Redis ratelimit failed. Using fallback limiter.",
+        undefined,
+        {
+          key,
+          error: String(error),
+        }
+      );
       // If it throws (either network error or circuit breaker OPEN), we fallback
     }
   }
