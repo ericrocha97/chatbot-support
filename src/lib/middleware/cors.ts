@@ -28,7 +28,7 @@ export function getCorsHeaders(req: NextRequest): Record<string, string> {
     return {};
   }
 
-  const allowed = env.ALLOWED_ORIGINS.split(",").map((s) => s.trim());
+  const allowed = env.ALLOWED_ORIGINS.split(",").map((s) => s.trim().replace(/\/$/, ""));
 
   if (!allowed.includes(origin)) {
     logger.warn("CORS blocked request", undefined, { origin, allowed });
