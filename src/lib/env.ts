@@ -5,7 +5,7 @@ const envSchema = z.object({
   AI_MODEL: z.string().default("gemini-2.5-flash"),
   ALLOWED_ORIGINS: z.string().optional(),
   SESSION_TOKEN_SECRET: z.string().min(1, "Session token secret is required"),
-  SESSION_TOKEN_EXPIRY_MINUTES: z.coerce.number().default(5),
+  SESSION_TOKEN_EXPIRY_MINUTES: z.coerce.number().int().positive().default(5),
 });
 
 const parseEnv = () => {

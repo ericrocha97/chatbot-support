@@ -30,25 +30,21 @@ try {
 // Circuit breaker specifically for Redis
 const redisCircuitBreaker = new CircuitBreaker(3, 30_000);
 
-export async function rateLimit(sessionId: string): Promise<RateLimitResult> {
+export async function rateLimit(key: string): Promise<RateLimitResult> {
   if (upstashRatelimit) {
     try {
       // Execute the request via circuit breaker
       const { success, limit, remaining, reset } =
-        await redisCircuitBreaker.execute(() =>
-          upstashRatelimit?.limit(sessionId)
-        );
+        await redisCircuitBreaker.execute(() => upstashRatelimit.limit(key));
       return { success, limit, remaining, reset };
     } catch (error) {
-      logger.error(
-        "Redis ratelimit failed. Using fallback limiter.",
-        sessionId,
-        { error: String(error) }
-      );
+      logger.error("Redis ratelimit failed. Using fallback limiter.", key, {
+        error: String(error),
+      });
       // If it throws (either network error or circuit breaker OPEN), we fallback
     }
   }
 
   // Graceful degradation
-  return fallbackLimiter.limit(sessionId);
+  return fallbackLimiter.limit(key);
 }

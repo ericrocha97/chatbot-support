@@ -26,8 +26,9 @@ export const POST = withErrorHandler(async (req: NextRequest) => {
     throw new UnauthorizedError("Sessão inválida ou expirada.");
   }
 
-  // Rate limit by IP to prevent abuse even after session renewal
-  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  // x-forwarded-for can be a comma-separated proxy chain, use only the first (client) IP
+  const rawIp = req.headers.get("x-forwarded-for") ?? "unknown";
+  const ip = rawIp.split(",")[0].trim();
   const result = await rateLimit(ip);
   if (!result.success) {
     throw new RateLimitError(result.limit, result.reset);

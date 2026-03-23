@@ -16,7 +16,8 @@ export const payloadSchema = z.object({
               text: z.string().max(2000, "Texto do histórico muito longo."),
             })
           )
-          .min(1, "Cada item do histórico deve ter pelo menos uma parte."),
+          .min(1, "Cada item do histórico deve ter pelo menos uma parte.")
+          .max(1, "Cada item do histórico deve ter no máximo uma parte."),
       })
     )
     .max(50, "Histórico muito longo.")

@@ -58,6 +58,7 @@ Write code that is **accessible, performant, type-safe, and maintainable**. Focu
 ### Error Handling & Debugging
 
 - Remove `console.log`, `debugger`, and `alert` statements from production code
+  - **Exception:** `src/lib/logger.ts` is the **only** file allowed to use `console.*` directly — it is the structured server-side log transport and intentionally routes all output through `console.error/warn/log` as JSON. All other server-side code must use the `logger` helper. Client-side code must never use `console.*`.
 - Throw `Error` objects with descriptive messages, not strings or other values
 - Use `try-catch` blocks meaningfully - don't catch errors just to rethrow them
 - Prefer early returns over nested conditionals for error cases

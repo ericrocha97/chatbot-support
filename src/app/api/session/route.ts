@@ -13,7 +13,9 @@ const sessionCreationLimiter = new InMemoryRateLimiter(30, 60 * 60 * 1000);
 export const POST = withErrorHandler(async (req: NextRequest) => {
   const corsHeaders = getCorsHeaders(req);
 
-  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  // x-forwarded-for can be a comma-separated proxy chain, use only the first (client) IP
+  const rawIp = req.headers.get("x-forwarded-for") ?? "unknown";
+  const ip = rawIp.split(",")[0].trim();
 
   // Rate limit session creation per IP to prevent token farming
   const result = sessionCreationLimiter.limit(`session-create:${ip}`);

@@ -9,6 +9,7 @@ import {
   UnauthorizedError,
 } from "../errors";
 import { logger } from "../logger";
+import { getCorsHeaders } from "./cors";
 
 export function withErrorHandler(
   handler: (req: NextRequest) => Promise<NextResponse>
@@ -73,7 +74,7 @@ export function withErrorHandler(
 
       return NextResponse.json(
         { error: message, ...responsePayload },
-        { status: statusCode }
+        { status: statusCode, headers: getCorsHeaders(req) }
       );
     }
   };
